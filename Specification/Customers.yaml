@@ -1,0 +1,131 @@
+swagger: '2.0'
+info:
+  version: '1.0.0'
+  title: 'Customers'
+  description: 'Customers'
+  license:
+    name: NombreLicencia
+    url: https://urldeLicencia.com
+consumes:
+  - application/json
+  - application/xml
+produces:
+  - application/json
+  - application/xml
+# Added by API Auto Mocking Plugin
+host: virtserver.swaggerhub.com
+# basePath: /apiDesigner/firstApi/1.0.0
+basePath: /apiDesigner/Customers/v1
+schemes:
+ - https
+paths:
+  /customers/{idCustomer}:
+    get:
+      summary: Obtencion de clientes
+      description: Obtencion de clientes que registrados
+      operationId: getCustomer
+      parameters:
+        - $ref: '#/parameters/idCustomer'
+      responses:
+        200:
+          description: Lista de clientes
+          schema:
+            $ref: '#/definitions/Customer'
+        400:
+          description: Request erroneo
+          schema:
+            $ref: '#/definitions/Error'
+  /customers:
+    get:
+      summary: Obtencion de clientes
+      description: Obtencion de clientes que registrados
+      operationId: getCustomers
+      responses:
+        200:
+          description: Lista de clientes
+          schema:
+            $ref: '#/definitions/Customers'
+        400:
+          description: Request erroneo
+          schema:
+            $ref: '#/definitions/Error'
+    post:
+      summary: Guardar un cliente nuevo
+      description: Realizar el registro de un cliente nuevo
+      operationId: createCustomers
+      parameters:
+        - name: listaClientesRegistrar
+          in: body
+          required: true
+          schema:
+            $ref: '#/definitions/Customers'
+      responses:
+        201:
+          description: Clientes registrados
+          schema:
+            type: array
+            items:
+              properties:
+                idCliente:
+                  type: integer
+                  example: 12345
+                nombreCliente:
+                  type: string
+                  example: JUAN PEREZ
+definitions:
+  Customers:
+    type: object
+    properties:
+      Customer:
+        type: array
+        items:
+          $ref: '#/definitions/Customer'
+  Customer:
+    type: object
+    required:
+      - username
+      - firstName
+    properties:
+      firstName:
+        allOf: 
+          - $ref: '#/definitions/Name'
+        description: Nombre de cliente
+      lastName:
+        type: string
+        example: PEREZ
+      username:
+        type: string
+        example: JUAN
+  Error:
+    type: object
+    required:
+      - errorCode
+      - summary
+      - description
+    properties:
+      errorCode:
+        type: string
+        example: ERR-1001
+      summary:
+        type: string
+        example: Caracteres no permitidos
+      description:
+        type: string
+        example: Se ha validado el id del cliente con caracteres no aceptados
+        
+  Name:
+    example: PEREZ
+    type: string
+    maxLength: 50
+    description: Nombres de usuario
+
+parameters:
+  idCustomer:
+    name: idCustomer
+    in: path
+    required: true
+    type: integer
+    format: int64
+    maxLength: 5
+    description: Identificador del cliente
+    
